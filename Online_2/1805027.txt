@@ -1,0 +1,37 @@
+#Internal Hosts can send UDP packets to the external hosts.
+iptables -A FORWARD -p udp -i eth1 -o eth0 -j ACCEPT(1)
+
+#Internal Hosts can not send UDP packets to each other.
+iptables -A FORWARD -p udp -s 192.168.60.0/24 -d 192.168.60.0/24 -j DROP(2)
+
+#External Hosts cannot send UDP packets to the internal hosts except External host with IP address
+10.9.0.5 can send UDP packets to 192.168.60.6
+iptables -A FORWARD -p udp -s 10.9.0.5 -d 192.168.10.6 -i eth0 -o eth1 -j ACCEPT(3)
+iptables -A FORWARD -p udp -i eth0 -o eth1 -j DROP (4)
+
+#External hosts cannot make any new TCP connection with internal hosts
+iptables -A FORWARD -p tcp -i eth0 -o eth1 --syn -j DROP (5)
+
+#No Host can connect via SSH to the router except the internal host with IP address 192.168.60.7
+iptables -A INPUT -p tcp -s 192.168.10.7 --dport 22 -j ACCEPT(6)
+iptables -A INPUT -p tcp --dport 22 -j DROP(6)
+
+#External host with IP address 10.9.0.5 can ping to internal host with IP address 192.168.60.5 15 times per
+minute but the first 4 pings will be allowed to pass even if they exceed the rate limit.
+iptables -A FORWARD -p icmp --icmp-type echo-request -s 10.9.0.5 -d 192.168.10.5 -m limit --limit 15/min --limit-burst 4 -j ACCEPT(7)
+
+#Each internal host can send 20 packets per minute.
+iptables -A FORWARD -i eth0 -m limit --limit 20/min -j ACCEPT
+
+to drop the commands,
+iptables -P FORWARD DROP
+
+
+
+
+
+
+
+
+
+
