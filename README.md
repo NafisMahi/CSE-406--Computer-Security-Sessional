@@ -2,7 +2,7 @@
 
 # CSE406 - Computer Security
 
-## Offline 1 (AES Encryption-Decryption with Diffie-Hellman Key Exchange) [Offline1][https://github.com/NafisMahi/CSE-406--Computer-Security-Sessional/tree/main/Offline_1]
+## Offline 1 (AES Encryption-Decryption with Diffie-Hellman Key Exchange) [Offline1](https://github.com/NafisMahi/CSE-406--Computer-Security-Sessional/tree/main/Offline_1)
 
 ### Setup
 Navigate to the `solutions` folder and run the following commands:
